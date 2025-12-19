@@ -1,6 +1,5 @@
 import requests
 import json
-import re
 import os
 import concurrent.futures
 from datetime import datetime
@@ -11,10 +10,12 @@ from tabulate import tabulate
 init(autoreset=True)
 
 class PyHeaderSentry:
-    def __init__(self):
+    # MODIFIED: Accepts target_url from main.py
+    def __init__(self, target_url=None):
         self.session = requests.Session()
-        self.session.headers.update({'User-Agent': 'PyHeaderSentry-Security-Audit-v2.0'})
+        self.session.headers.update({'User-Agent': 'PyHeaderSentry-Security-Audit-v2.5'})
         self.all_results = []
+        self.target_url = target_url
         
         # Vulnerability & Remediation Database
         self.db = {
@@ -64,8 +65,22 @@ class PyHeaderSentry:
                 "Score": f"{max(0, score)}/100"
             }
             return result, missing
-        except Exception:
-            return {"URL": target, "Score": "ERROR"}, []
+        except Exception as e:
+            return {"URL": target, "Score": f"ERROR: {str(e)[:20]}"}, []
+
+    # MODIFIED: This is the entry point used by main.py
+    def run_audit(self):
+        if not self.target_url:
+            print(f"{Fore.RED}Error: No URL provided for audit.")
+            return
+
+        res, missing = self.audit_site(self.target_url)
+        if res:
+            print(f"\n{Fore.CYAN}{Style.BRIGHT}🛡️  WEB HEADER AUDIT RESULTS")
+            print(tabulate([res], headers="keys", tablefmt="fancy_grid"))
+            self.print_remediation(missing)
+            self.all_results.append(res)
+            self.save_json()
 
     def print_remediation(self, missing_headers):
         if not missing_headers:
@@ -83,50 +98,10 @@ class PyHeaderSentry:
         for m in missing_headers:
             print(f"  {Fore.WHITE}{self.db[m]['fix']}")
 
-    def run_batch(self, file_path):
-        if not os.path.exists(file_path):
-            print(f"{Fore.RED}File {file_path} not found.")
-            return
-        
-        with open(file_path, 'r') as f:
-            urls = [line.strip() for line in f if line.strip()]
-        
-        print(f"{Fore.BLUE}[*] Auditing {len(urls)} sites using multi-threading...")
-        
-        final_table = []
-        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            future_to_url = {executor.submit(self.audit_site, url): url for url in urls}
-            for future in concurrent.futures.as_completed(future_to_url):
-                res, _ = future.result()
-                if res: 
-                    final_table.append(res)
-                    self.all_results.append(res)
-
-        print(tabulate(final_table, headers="keys", tablefmt="fancy_grid"))
-        self.save_json()
-
     def save_json(self):
-        filename = f"Audit_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        # Create reports directory if it doesn't exist
+        if not os.path.exists('reports'): os.makedirs('reports')
+        filename = f"reports/Header_Audit_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         with open(filename, 'w') as f:
             json.dump(self.all_results, f, indent=4)
         print(f"\n{Fore.MAGENTA}[+] JSON report saved to {filename}")
-
-    def menu(self):
-        print(f"{Fore.CYAN}{Style.BRIGHT}=== PYHEADER SENTRY PRO v2.5 ===")
-        print("1. Scan Single URL (with full remediation guide)")
-        print("2. Batch Scan (.txt file)")
-        choice = input(f"{Fore.YELLOW}Selection: ")
-
-        if choice == "1":
-            target = input("Enter URL: ")
-            res, missing = self.audit_site(target)
-            if res:
-                print(tabulate([res], headers="keys", tablefmt="fancy_grid"))
-                self.print_remediation(missing)
-        elif choice == "2":
-            path = input("Enter path to .txt file: ")
-            self.run_batch(path)
-
-if __name__ == "__main__":
-    sentry = PyHeaderSentry()
-    sentry.menu()
