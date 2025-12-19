@@ -2,94 +2,86 @@
 
 This **Master README** is designed to act as a professional landing page for your repository. It organizes your three tools into a cohesive "Security Suite," making it look like a high-end open-source project.
 
----
+To create a compelling GitHub post (which usually takes the form of a **README.md** or a **Social Preview/Release** note), you want to highlight the technical sophistication of your suite. This project has evolved from separate scripts into a unified **Vulnerability Assessment and Penetration Testing (VAPT)** framework.
 
-# 🛡️ Python Security Toolkit (PST)
-
-A comprehensive suite of professional cybersecurity utilities for network reconnaissance, web application auditing, and encryption health checks.
-
-## 🧰 Included Tools
-
-### 1. 🌐 PyHeaderSentry
-
-**Layer 7 (Application) Security Auditor**
-An advanced web scanner that evaluates HTTP response headers to defend against XSS, Clickjacking, and MitM attacks.
-
-* **Key Features:** Automated security scoring (0-100), detailed risk advisories, and copy-paste remediation guides for Nginx/Apache.
-* **Best For:** Web developers and Pentesters auditing site security.
-
-### 2. 📡 NetScout
-
-**Layer 3/4 (Network/Transport) Reconnaissance**
-A low-level network scanner that combines ICMP "Scouting" with TCP port discovery.
-
-OS Fingerprinting: Analyzes ICMP Time-to-Live (TTL) values to identify the target's Operating System (Linux, Windows, or Network Infrastructure).
-
-  * **Adaptive Scan Modes: * Aggressive: High-speed multi-threading (100+ threads) for rapid discovery.
-
-  * **stealth: Randomized jitter to bypass basic threshold-based firewalls.
-
-  * **Sneaky: Slow-crawl timing designed to evade Intrusion Detection Systems (IDS).
-
-  * **Deep Banner Grabbing: Performs context-aware service "pokes" (e.g., HTTP HEAD requests) to force services to reveal version data.
-
-    VAPT Advisory Engine: Automatically correlates open ports with known vulnerabilities (like EternalBlue or BlueKeep) and provides industry-standard fixes.
-### 3. 📜 CertSentry Pro
-
-**Encryption & Identity Validator**
-A deep-dive SSL/TLS certificate auditor that checks the integrity of the encryption tunnel.
-
-* **Key Features:** Expiry countdown, protocol version analysis (flags TLS 1.0/1.1), cipher bit-strength validation, and batch domain auditing.
+Here is a professional template you can use for your repository's landing page.
 
 ---
 
-## 🚀 Installation & Setup
+# 🛡️ VAPT Toolkit: Integrated Security Suite
 
-### 1. Clone the repository
+A modular, high-performance security framework built in Python for infrastructure reconnaissance, web security auditing, and SSL/TLS analysis. This toolkit consolidates three specialized security modules into a single "Master Console" for streamlined security engagements.
+
+## 🧰 The Suite Architecture
+
+The toolkit is divided into three strategic pillars:
+
+### 1. 📡 NetScout (Infrastructure Audit)
+
+A stealth-focused port scanner and OS fingerprinter.
+
+* **Capabilities:** Multi-threaded TCP scanning, banner grabbing, and ICMP TTL-based OS detection.
+* **Intelligence:** Maps open ports to a built-in vulnerability database with risk levels and remediation fixes.
+* **Modes:** Supports `Aggressive`, `Stealth`, and `Sneaky` timings to bypass various IDS/Firewall configurations.
+
+### 2. 🛡️ PyHeaderSentry (Web Security)
+
+An automated auditor for HTTP response headers.
+
+* **Capabilities:** Analyzes headers like HSTS, CSP, X-Frame-Options, and X-Content-Type-Options.
+* **Scoring:** Generates a security posture score (0-100) based on header weights.
+* **Fixes:** Provides immediate **Nginx configuration snippets** to remediate missing headers.
+
+### 3. 🔐 CertSentry Pro (SSL/TLS Recon)
+
+A deep-dive tool for certificate analysis and subdomain discovery.
+
+* **Capabilities:** Extracts certificate expiry, protocol versions (TLS 1.2/1.3), and cipher strength.
+* **Recon:** Utilizes **Subject Alternative Name (SAN)** extraction to discover hidden subdomains without active brute-forcing.
+
+---
+
+## 🚀 Installation & Deployment
+
+### Prerequisites
+
+* Python 3.8+
+* Root/Sudo privileges (Required for NetScout's raw socket OS fingerprinting)
+
+### Quick Start
 
 ```bash
-git clone https://github.com/furrysec/Python-Security-Toolkit.git
+# Clone the repository
+git clone https://github.com/furrysec/vapt-toolkit.git
 cd vapt-toolkit
 
-```
+# Run the automated setup script
+chmod +x setup.sh
+./setup.sh
 
-### 2. Install Dependencies
-
-This toolkit relies on `requests`, `colorama`, and `tabulate` for its logic and UI.
-
-```bash
-pip install -r requirements.txt
+# Launch the Master Console
+sudo python3 main.py
 
 ```
-
----
-
-## 📖 Usage Guide
-
-| Tool | Command | Privileges |
-| --- | --- | --- |
-| **Web Headers** | `python pyheader_sentry.py` | User |
-| **Port Scanner** | `sudo python Netscout.py` | **Admin/Root** |
-| **SSL Auditor** | `python cert_sentry.py` | User |
 
 ---
 
 ## 📂 Project Structure
 
 ```text
-Python-Security-Toolkit/
-├── main.py               <-- The Launcher
-├── Netscout.py          <-- Infrastructure/VAPT
-├── pyheader_sentry.py    <-- Web Security
-├── CertSentry_Pro.py      <-- SSL/TLS Recon
-├── requirements.txt      <-- colorama, requests, tabulate
-└── README.md             <-- The Master Documentation```
+vapt-toolkit/
+├── main.py               # Master Dashboard (The Entry Point)
+├── NetScout.py           # Infrastructure & VAPT Engine
+├── pyheader_sentry.py    # Web Header Auditor
+├── CertSentry_Pro.py     # SSL/TLS & SAN Recon
+├── requirements.txt      # Project Dependencies
+└── reports/              # Auto-generated JSON Audit Reports
+
+```
 
 ## ⚖️ Legal Disclaimer
 
-**For Educational and Authorized Testing Purposes Only.** Unauthorized scanning of third-party systems is illegal. The developer assumes no liability for misuse of this toolkit. Always obtain written consent before performing security audits.
+This toolkit is designed for **authorized security auditing and educational purposes only**. Users are responsible for complying with local, state, and federal laws. Unauthorized access to networks or web resources is illegal.
 
 ---
-
-**Would you like me to create the `main.py` "Control Center" script now, so you can run all these tools from a single interactive dashboard?**
 
