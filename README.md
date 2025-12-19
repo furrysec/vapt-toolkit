@@ -16,23 +16,25 @@ To use the scripts in this repo, clone it locally:
 PyHeaderSentry is a professional-grade Python security tool designed to audit HTTP response headers. It doesn't just check if headers exist; it evaluates their configurations against modern security standards (like HSTS age and CSP strictness).
 ✨ Features
 
-    Deep Validation: Analyzes HSTS max-age and CSP "unsafe" directives.
+  Deep Validation: Analyzes HSTS max-age and CSP "unsafe" directives.
 
-    Security Grading: Provides a clear "Strong/Weak/Missing" status for each header.
+  Security Grading: Provides a clear "Strong/Weak/Missing" status for each header.
 
-    WAF Bypass: Uses a custom Browser User-Agent to prevent blocks during scans.
+  WAF Bypass: Uses a custom Browser User-Agent to prevent blocks during scans.
 
-    Colorized Output: Visual feedback for quick identification of vulnerabilities.
+  Colorized Output: Visual feedback for quick identification of vulnerabilities.
 
 🚀 Quick Start
 
 1. Install Dependencies
 Bash
-pip install requests colorama
+
+          pip install requests colorama
 
 2. Run the Scanner
 Bash
-python pyheader_sentry.py
+
+          python pyheader_sentry.py
 
 ## ⚠️ Disclaimer
 This toolkit is for **educational and ethical purposes only**. Use it only on systems you have explicit permission to test.
