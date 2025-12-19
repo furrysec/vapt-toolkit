@@ -6,7 +6,7 @@ from colorama import Fore, Style, init
 try:
     from net_scout import NetScout
     from pyheader_sentry import pyheader_sentry
-    from cert_sentry import 'CertSentry Pro'
+    from cert_sentry import CertSentry Pro
 except ImportError as e:
     print(f"Error: Missing tool files or dependencies. {e}")
     sys.exit(1)
@@ -50,7 +50,7 @@ def main():
 
         elif choice == '3':
             domains = input("\nEnter domains (space separated): ").split()
-            sentry = 'CertSentry Pro'()
+            sentry = CertSentry_Pro()
             sentry.audit(domains)
             input("\nPress Enter to return to menu...")
 
