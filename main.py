@@ -1,65 +1,71 @@
 import os
 import sys
+import time
 from colorama import Fore, Style, init
 
-# Import your tools
+# Standardizing imports based on your GitHub file names
 try:
-    from Netscout import NetScout
-    from pyheader_sentry import pyheader_sentry
-    from certsentry_pro import CertSentry_Pro
+    # If your files don't have .py extensions, Python treats them as modules 
+    # if they are in the same folder.
+    import NetScout as ns
+    import pyheader_sentry as phs
+    import CertSentry_Pro as csp
 except ImportError as e:
-    print(f"Error: Missing tool files or dependencies. {e}")
+    print(f"{Fore.RED}Status Error: Could not load toolkit modules. {e}")
+    print(f"{Fore.YELLOW}Tip: Ensure all files are in the same folder as main.py")
     sys.exit(1)
 
 init(autoreset=True)
 
-def clear_screen():
+def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def show_banner():
+def main_menu():
+    clear()
     print(f"""
-    {Fore.CYAN}{Style.BRIGHT}==============================================
-    {Fore.WHITE}      🛡️  PYTHON SECURITY TOOLKIT (PST) v1.0
-    {Fore.CYAN}==============================================
-    {Fore.GREEN} [1] {Fore.WHITE}Network Recon & VAPT (NetScout)
-    {Fore.GREEN} [2] {Fore.WHITE}Web Security Header Audit (Sentry)
-    {Fore.GREEN} [3] {Fore.WHITE}SSL/TLS Recon & Audit (CertSentry)
-    {Fore.RED} [0] {Fore.WHITE}Exit
+    {Fore.CYAN}{Style.BRIGHT}╔════════════════════════════════════════════════════╗
+    {Fore.CYAN}{Style.BRIGHT}║          🛠️  VAPT TOOLKIT - MASTER CONSOLE         ║
+    {Fore.CYAN}{Style.BRIGHT}╚════════════════════════════════════════════════════╝
+    
+    {Fore.WHITE}[1] {Fore.GREEN}NetScout        {Fore.WHITE}- Infrastructure & Port Audit
+    {Fore.WHITE}[2] {Fore.GREEN}PyHeaderSentry  {Fore.WHITE}- Web Security Header Analysis
+    {Fore.WHITE}[3] {Fore.GREEN}CertSentry Pro  {Fore.WHITE}- SSL/TLS Recon & Expiry Audit
+    
+    {Fore.WHITE}[0] {Fore.RED}Exit Toolkit
     """)
 
-def main():
+def run():
     while True:
-        clear_screen()
-        show_banner()
-        choice = input(f"{Fore.YELLOW}Select an option: ")
+        main_menu()
+        choice = input(f"{Fore.YELLOW}Select Tool >> ")
 
         if choice == '1':
-            target = input("\nEnter Target IP: ")
-            start = int(input("Start Port: "))
-            end = int(input("End Port: "))
-            mode = input("Mode (aggressive/stealth): ")
-            scanner = NetScout(target)
-            scanner.run_suite(start, end, mode)
-            input("\nPress Enter to return to menu...")
+            target = input(f"\n{Fore.CYAN}Enter Target IP/Domain: ")
+            start_p = int(input("Start Port: "))
+            end_p = int(input("End Port: "))
+            # Assuming NetScout class is named NetScoutAggressive or similar
+            scanner = ns.NetScoutSovereign(target)
+            scanner.run_suite(start_p, end_p, mode="aggressive")
+            input(f"\n{Fore.WHITE}Press Enter to return to menu...")
 
         elif choice == '2':
-            url = input("\nEnter URL (with http/https): ")
-            auditor =  pyheader_sentry(url)
+            url = input(f"\n{Fore.CYAN}Enter Target URL (e.g., https://example.com): ")
+            auditor = phs.HeaderSentry(url)
             auditor.run_audit()
-            input("\nPress Enter to return to menu...")
+            input(f"\n{Fore.WHITE}Press Enter to return to menu...")
 
         elif choice == '3':
-            domains = input("\nEnter domains (space separated): ").split()
-            sentry = CertSentry_Pro()
+            domains = input(f"\n{Fore.CYAN}Enter Domains (separated by space): ").split()
+            sentry = csp.CertSentryPro()
             sentry.audit(domains)
-            input("\nPress Enter to return to menu...")
+            input(f"\n{Fore.WHITE}Press Enter to return to menu...")
 
         elif choice == '0':
-            print(f"{Fore.MAGENTA}Happy Hacking! Goodbye.")
+            print(f"\n{Fore.MAGENTA}Shutting down systems... Goodbye.")
             break
         else:
-            print(f"{Fore.RED}Invalid selection.")
+            print(f"{Fore.RED}Invalid Selection!")
             time.sleep(1)
 
 if __name__ == "__main__":
-    main()
+    run()
