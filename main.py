@@ -3,16 +3,14 @@ import sys
 import time
 from colorama import Fore, Style, init
 
-# Standardizing imports based on your GitHub file names
+# Standardized imports - files must end in .py
 try:
-    # If your files don't have .py extensions, Python treats them as modules 
-    # if they are in the same folder.
     import NetScout as ns
     import pyheader_sentry as phs
     import CertSentry_Pro as csp
 except ImportError as e:
     print(f"{Fore.RED}Status Error: Could not load toolkit modules. {e}")
-    print(f"{Fore.YELLOW}Tip: Ensure all files are in the same folder as main.py")
+    print(f"{Fore.YELLOW}Tip: Run 'mv NetScout NetScout.py' etc. in your terminal.")
     sys.exit(1)
 
 init(autoreset=True)
@@ -43,13 +41,13 @@ def run():
             target = input(f"\n{Fore.CYAN}Enter Target IP/Domain: ")
             start_p = int(input("Start Port: "))
             end_p = int(input("End Port: "))
-            # Assuming NetScout class is named NetScoutAggressive or similar
+            # Using the 'Sovereign' class we built for NetScout
             scanner = ns.NetScoutSovereign(target)
             scanner.run_suite(start_p, end_p, mode="aggressive")
             input(f"\n{Fore.WHITE}Press Enter to return to menu...")
 
         elif choice == '2':
-            url = input(f"\n{Fore.CYAN}Enter Target URL (e.g., https://example.com): ")
+            url = input(f"\n{Fore.CYAN}Enter Target URL (e.g., https://google.com): ")
             auditor = phs.HeaderSentry(url)
             auditor.run_audit()
             input(f"\n{Fore.WHITE}Press Enter to return to menu...")
