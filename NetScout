@@ -1,0 +1,91 @@
+import socket
+import os
+import struct
+import time
+import select
+from colorama import Fore, Style, init
+from tabulate import tabulate
+
+init(autoreset=True)
+
+class ProScanner:
+    def __init__(self, target):
+        self.target = target
+        # Expanded common ports
+        self.port_map = {
+            21: "FTP", 22: "SSH", 23: "Telnet", 25: "SMTP", 
+            53: "DNS", 80: "HTTP", 443: "HTTPS", 3306: "MySQL", 
+            3389: "RDP", 8080: "HTTP-Proxy"
+        }
+        self.open_ports = []
+
+    def checksum(self, source_string):
+        sum = 0
+        count_to = (len(source_string) // 2) * 2
+        count = 0
+        while count < count_to:
+            this_val = source_string[count + 1] * 256 + source_string[count]
+            sum = sum + this_val
+            sum = sum & 0xffffffff
+            count = count + 2
+        if count_to < len(source_string):
+            sum = sum + source_string[len(source_string) - 1]
+            sum = sum & 0xffffffff
+        sum = (sum >> 16) + (sum & 0xffff)
+        sum = sum + (sum >> 16)
+        return ~sum & 0xffff
+
+    def ping(self, timeout=2):
+        """Sends a raw ICMP Echo Request."""
+        try:
+            icmp_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
+            my_id = os.getpid() & 0xFFFF
+            header = struct.pack("bbHHh", 8, 0, 0, my_id, 1)
+            data = struct.pack("d", time.time())
+            my_checksum = self.checksum(header + data)
+            header = struct.pack("bbHHh", 8, 0, socket.htons(my_checksum), my_id, 1)
+            
+            icmp_socket.sendto(header + data, (self.target, 1))
+            ready = select.select([icmp_socket], [], [], timeout)
+            
+            return True if ready[0] else False
+        except PermissionError:
+            print(f"{Fore.RED}[!] ERROR: Run as Admin/Sudo for ICMP.")
+            return False
+
+    def tcp_scan(self):
+        """Performs a TCP Connect scan."""
+        print(f"\n{Fore.CYAN}[*] Scanning TCP ports on {self.target}...")
+        for port, service in self.port_map.items():
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(0.8)
+            result = sock.connect_ex((self.target, port))
+            if result == 0:
+                self.open_ports.append([port, service, "OPEN"])
+            sock.close()
+        
+        if self.open_ports:
+            print(tabulate(self.open_ports, headers=["Port", "Service", "Status"], tablefmt="fancy_grid"))
+        else:
+            print(f"{Fore.YELLOW}[-] No open ports discovered.")
+
+    def run(self, force=False):
+        print(f"\n{Fore.MAGENTA}--- Network Scout v2.0 ---")
+        if not force:
+            print(f"[*] Scouting {self.target} with ICMP...")
+            is_alive = self.ping()
+        else:
+            print(f"{Fore.YELLOW}[!] Force Mode: Skipping ICMP check.")
+            is_alive = True
+
+        if is_alive:
+            self.tcp_scan()
+        else:
+            print(f"{Fore.RED}[-] Host unresponsive. Use 'Force' mode if you think it's up.")
+
+if __name__ == "__main__":
+    ip = input("Target IP: ")
+    mode = input("Use ICMP Scout? (y/n): ").lower()
+    
+    scanner = ProScanner(ip)
+    scanner.run(force=(mode == 'n'))
