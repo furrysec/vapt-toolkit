@@ -14,7 +14,7 @@ class PyHeaderSentry:
         self.checks = {
             "Strict-Transport-Security": self.check_hsts,
             "Content-Security-Policy": self.check_csp,
-            "X-Frame-Options": lambda v: f"{Fore.GREEN}OK ({v})" if v in ['DENY', 'SAMEORIGIN'] else f"{Fore.RED}WEAK ({v})",
+            "X-Frame-Options": lambda v: f"{Fore.GREEN}OK ({v})" if v.upper() in ['DENY', 'SAMEORIGIN'] else f"{Fore.RED}WEAK ({v})",
             "X-Content-Type-Options": lambda v: f"{Fore.GREEN}OK ({v})" if v == 'nosniff' else f"{Fore.RED}WEAK ({v})",
             "Referrer-Policy": lambda v: f"{Fore.GREEN}OK ({v})"
         }
