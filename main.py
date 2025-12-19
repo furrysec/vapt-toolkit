@@ -3,14 +3,13 @@ import sys
 import time
 from colorama import Fore, Style, init
 
-# Standardized imports - files must end in .py
+# Import tools using the new .py extensions
 try:
     import NetScout as ns
     import pyheader_sentry as phs
     import CertSentry_Pro as csp
 except ImportError as e:
     print(f"{Fore.RED}Status Error: Could not load toolkit modules. {e}")
-    print(f"{Fore.YELLOW}Tip: Run 'mv NetScout NetScout.py' etc. in your terminal.")
     sys.exit(1)
 
 init(autoreset=True)
@@ -41,13 +40,14 @@ def run():
             target = input(f"\n{Fore.CYAN}Enter Target IP/Domain: ")
             start_p = int(input("Start Port: "))
             end_p = int(input("End Port: "))
-            # Using the 'Sovereign' class we built for NetScout
+            # Using the Sovereign class name
             scanner = ns.NetScoutSovereign(target)
             scanner.run_suite(start_p, end_p, mode="aggressive")
             input(f"\n{Fore.WHITE}Press Enter to return to menu...")
 
         elif choice == '2':
             url = input(f"\n{Fore.CYAN}Enter Target URL (e.g., https://google.com): ")
+            # FIX: Using 'PyHeaderSentry' as suggested by your previous error
             auditor = phs.PyHeaderSentry(url)
             auditor.run_audit()
             input(f"\n{Fore.WHITE}Press Enter to return to menu...")
