@@ -1,67 +1,89 @@
 # VAPT Toolkit 🛠️
 
-This repository serves as my personal laboratory and toolkit for Vulnerability Assessment and Penetration Testing.
+This **Master README** is designed to act as a professional landing page for your repository. It organizes your three tools into a cohesive "Security Suite," making it look like a high-end open-source project.
 
-A **Master README** is the storefront of your repository. It’s what developers and recruiters see first. It needs to look organized, authoritative, and professional.
+---
 
-Since you now have a suite of tools, we should brand the repository as a **"Python Security Toolkit"**. This shows you aren't just writing random scripts, but building a cohesive collection of security utilities.
+# 🛡️ Python Security Toolkit (PST)
 
-### 📁 Proposed Repository Structure
+A comprehensive suite of professional cybersecurity utilities for network reconnaissance, web application auditing, and encryption health checks.
 
-```text
-Python-Security-Toolkit/
-├── pyheader_sentry.py    # Web Security Header Auditor
-├── net_scout.py          # ICMP & Port Scanner
-├── requirements.txt      # Dependencies for all tools
-└── README.md             # The Master Documentation
+## 🧰 Included Tools
+
+### 1. 🌐 PyHeaderSentry
+
+**Layer 7 (Application) Security Auditor**
+An advanced web scanner that evaluates HTTP response headers to defend against XSS, Clickjacking, and MitM attacks.
+
+* **Key Features:** Automated security scoring (0-100), detailed risk advisories, and copy-paste remediation guides for Nginx/Apache.
+* **Best For:** Web developers and Pentesters auditing site security.
+
+### 2. 📡 NetScout
+
+**Layer 3/4 (Network/Transport) Reconnaissance**
+A low-level network scanner that combines ICMP "Scouting" with TCP port discovery.
+
+* **Key Features:** Raw socket ICMP pinging, multi-threaded TCP scanning, and a "Force Mode" to audit hosts behind stealth firewalls.
+* **Requirement:** Requires **Admin/Sudo** privileges to send raw ICMP packets.
+
+### 3. 📜 CertSentry Pro
+
+**Encryption & Identity Validator**
+A deep-dive SSL/TLS certificate auditor that checks the integrity of the encryption tunnel.
+
+* **Key Features:** Expiry countdown, protocol version analysis (flags TLS 1.0/1.1), cipher bit-strength validation, and batch domain auditing.
+
+---
+
+## 🚀 Installation & Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/furrysec/Python-Security-Toolkit.git
+cd vapt-toolkit
 
 ```
 
----
+### 2. Install Dependencies
 
-### The Master README.md Template
-
-```markdown
-# 🛠️ Python Security Toolkit
-
-A collection of professional-grade cybersecurity tools written in Python for network reconnaissance and web security auditing.
-
-## 🚀 Included Tools
-
-### 1. 🛡️ PyHeaderSentry
-An advanced Web Security Header Auditor that evaluates server defenses.
-* **Features:** Security scoring (0-100), vulnerability advisories (XSS, MitM), and Nginx/Apache remediation guides.
-* **Usage:** `python pyheader_sentry.py`
-
-### 2. 📡 NetScout
-A high-performance network reconnaissance tool using raw sockets.
-* **Features:** ICMP "Echo Request" scouting, TCP connect scanning, and a "Force Scan" mode to bypass ICMP-blocking firewalls.
-* **Usage:** `sudo python net_scout.py` (Required for raw ICMP packets)
-
----
-
-## 📦 Installation
-
-Ensure you have Python 3.8+ installed, then install the dependencies:
+This toolkit relies on `requests`, `colorama`, and `tabulate` for its logic and UI.
 
 ```bash
 pip install -r requirements.txt
 
 ```
 
-## ⚖️ Legal Disclaimer
+---
 
-These tools are for **educational and authorized security testing only**. The developer is not responsible for any misuse or damage caused by these scripts. Never scan targets you do not have explicit permission to audit.
+## 📖 Usage Guide
+
+| Tool | Command | Privileges |
+| --- | --- | --- |
+| **Web Headers** | `python pyheader_sentry.py` | User |
+| **Port Scanner** | `sudo python net_scout.py` | **Admin/Root** |
+| **SSL Auditor** | `python cert_sentry.py` | User |
+
+---
+
+## 📂 Project Structure
+
+```text
+Python-Security-Toolkit/
+├── pyheader_sentry.py    # Web Security Auditor
+├── net_scout.py          # ICMP & Port Scanner
+├── cert_sentry.py        # SSL/TLS Certificate Auditor
+├── requirements.txt      # List of dependencies
+├── setup.sh              # Linux/macOS setup script
+└── README.md             # Project documentation
 
 ```
 
+## ⚖️ Legal Disclaimer
 
+**For Educational and Authorized Testing Purposes Only.** Unauthorized scanning of third-party systems is illegal. The developer assumes no liability for misuse of this toolkit. Always obtain written consent before performing security audits.
 
-### Final Pro Tip: The `requirements.txt`
-Make sure your `requirements.txt` includes everything we used for both tools:
-```text
-requests==2.31.0
-colorama==0.4.6
-tabulate==0.9.0
+---
 
+**Would you like me to create the `main.py` "Control Center" script now, so you can run all these tools from a single interactive dashboard?**
 
