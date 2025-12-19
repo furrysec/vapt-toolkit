@@ -4,9 +4,9 @@ from colorama import Fore, Style, init
 
 # Import your tools
 try:
-    from net_scout import NetScoutSovereign
-    from pyheader_sentry import HeaderSentry
-    from cert_sentry import CertSentryPro
+    from net_scout import NetScout
+    from pyheader_sentry import pyheader_sentry.py 
+    from cert_sentry import 'CertSentry Pro'
 except ImportError as e:
     print(f"Error: Missing tool files or dependencies. {e}")
     sys.exit(1)
@@ -38,19 +38,19 @@ def main():
             start = int(input("Start Port: "))
             end = int(input("End Port: "))
             mode = input("Mode (aggressive/stealth): ")
-            scanner = NetScoutSovereign(target)
+            scanner = NetScout(target)
             scanner.run_suite(start, end, mode)
             input("\nPress Enter to return to menu...")
 
         elif choice == '2':
             url = input("\nEnter URL (with http/https): ")
-            auditor = HeaderSentry(url)
+            auditor =  pyheader_sentry.py(url)
             auditor.run_audit()
             input("\nPress Enter to return to menu...")
 
         elif choice == '3':
             domains = input("\nEnter domains (space separated): ").split()
-            sentry = CertSentryPro()
+            sentry = 'CertSentry Pro'()
             sentry.audit(domains)
             input("\nPress Enter to return to menu...")
 
