@@ -48,7 +48,7 @@ def run():
 
         elif choice == '2':
             url = input(f"\n{Fore.CYAN}Enter Target URL (e.g., https://google.com): ")
-            auditor = phs.HeaderSentry(url)
+            auditor = phs.PyHeaderSentry(url)
             auditor.run_audit()
             input(f"\n{Fore.WHITE}Press Enter to return to menu...")
 
