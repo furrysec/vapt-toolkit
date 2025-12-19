@@ -23,9 +23,17 @@ An advanced web scanner that evaluates HTTP response headers to defend against X
 **Layer 3/4 (Network/Transport) Reconnaissance**
 A low-level network scanner that combines ICMP "Scouting" with TCP port discovery.
 
-* **Key Features:** Raw socket ICMP pinging, multi-threaded TCP scanning, and a "Force Mode" to audit hosts behind stealth firewalls.
-* **Requirement:** Requires **Admin/Sudo** privileges to send raw ICMP packets.
+OS Fingerprinting: Analyzes ICMP Time-to-Live (TTL) values to identify the target's Operating System (Linux, Windows, or Network Infrastructure).
 
+  * **Adaptive Scan Modes: * Aggressive: High-speed multi-threading (100+ threads) for rapid discovery.
+
+  * **stealth: Randomized jitter to bypass basic threshold-based firewalls.
+
+  * **Sneaky: Slow-crawl timing designed to evade Intrusion Detection Systems (IDS).
+
+  * **Deep Banner Grabbing: Performs context-aware service "pokes" (e.g., HTTP HEAD requests) to force services to reveal version data.
+
+    VAPT Advisory Engine: Automatically correlates open ports with known vulnerabilities (like EternalBlue or BlueKeep) and provides industry-standard fixes.
 ### 3. 📜 CertSentry Pro
 
 **Encryption & Identity Validator**
