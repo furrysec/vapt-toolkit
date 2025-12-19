@@ -4,9 +4,9 @@ from colorama import Fore, Style, init
 
 # Import your tools
 try:
-    from net_scout import NetScout
+    from Netscout import NetScout
     from pyheader_sentry import pyheader_sentry
-    from cert_sentry import CertSentry_Pro
+    from certsentry_pro import CertSentry_Pro
 except ImportError as e:
     print(f"Error: Missing tool files or dependencies. {e}")
     sys.exit(1)
