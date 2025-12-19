@@ -69,7 +69,7 @@ pip install -r requirements.txt
 | Tool | Command | Privileges |
 | --- | --- | --- |
 | **Web Headers** | `python pyheader_sentry.py` | User |
-| **Port Scanner** | `sudo python net_scout.py` | **Admin/Root** |
+| **Port Scanner** | `sudo python Netscout.py` | **Admin/Root** |
 | **SSL Auditor** | `python cert_sentry.py` | User |
 
 ---
@@ -79,9 +79,9 @@ pip install -r requirements.txt
 ```text
 Python-Security-Toolkit/
 ├── main.py               <-- The Launcher
-├── net_scout.py          <-- Infrastructure/VAPT
+├── Netscout.py          <-- Infrastructure/VAPT
 ├── pyheader_sentry.py    <-- Web Security
-├── cert_sentry.py        <-- SSL/TLS Recon
+├── CertSentry_Pro.py      <-- SSL/TLS Recon
 ├── requirements.txt      <-- colorama, requests, tabulate
 └── README.md             <-- The Master Documentation```
 
