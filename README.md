@@ -29,7 +29,7 @@ PyHeaderSentry is a professional-grade Python security tool designed to audit HT
 1. Install Dependencies
 Bash
 
-          pip install requests colorama
+          pip install -r requirements.txt
 
 2. Run the Scanner
 Bash
