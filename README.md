@@ -78,14 +78,12 @@ pip install -r requirements.txt
 
 ```text
 Python-Security-Toolkit/
-├── pyheader_sentry.py    # Web Security Auditor
-├── net_scout.py          # ICMP & Port Scanner
-├── cert_sentry.py        # SSL/TLS Certificate Auditor
-├── requirements.txt      # List of dependencies
-├── setup.sh              # Linux/macOS setup script
-└── README.md             # Project documentation
-
-```
+├── main.py               <-- The Launcher
+├── net_scout.py          <-- Infrastructure/VAPT
+├── pyheader_sentry.py    <-- Web Security
+├── cert_sentry.py        <-- SSL/TLS Recon
+├── requirements.txt      <-- colorama, requests, tabulate
+└── README.md             <-- The Master Documentation```
 
 ## ⚖️ Legal Disclaimer
 
