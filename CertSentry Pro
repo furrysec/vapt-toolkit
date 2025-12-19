@@ -1,0 +1,58 @@
+import ssl
+import socket
+import json
+from datetime import datetime
+from colorama import Fore, Style, init
+from tabulate import tabulate
+
+init(autoreset=True)
+
+class CertSentryPro:
+    def __init__(self):
+        self.results = []
+
+    def get_cert_info(self, hostname):
+        context = ssl.create_default_context()
+        try:
+            with socket.create_connection((hostname, 443), timeout=5) as sock:
+                with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+                    cert = ssock.getpeercert()
+                    cipher = ssock.cipher()
+                    version = ssock.version()
+
+                    # Calculate Expiry
+                    expiry_str = cert['notAfter']
+                    expiry_date = datetime.strptime(expiry_str, '%b %d %H:%M:%S %Y %Z')
+                    days_left = (expiry_date - datetime.now()).days
+
+                    # Security Analysis
+                    is_weak_protocol = version in ['TLSv1', 'TLSv1.1']
+                    is_weak_cipher = cipher[1] < 128
+
+                    status = {
+                        "Domain": hostname,
+                        "Days Left": days_left,
+                        "Protocol": f"{Fore.RED if is_weak_protocol else Fore.GREEN}{version}",
+                        "Cipher": f"{Fore.RED if is_weak_cipher else Fore.GREEN}{cipher[0]} ({cipher[1]} bit)",
+                        "Status": "✅ SECURE" if days_left > 30 and not is_weak_protocol else "⚠️ ACTION REQ"
+                    }
+                    return status
+        except Exception as e:
+            return {"Domain": hostname, "Status": f"{Fore.RED}FAILED: {str(e)[:20]}"}
+
+    def audit(self, targets):
+        print(f"\n{Fore.CYAN}{Style.BRIGHT}🛡️  SSL/TLS Security Audit in Progress...")
+        self.results = [self.get_cert_info(t) for t in targets]
+        print(tabulate(self.results, headers="keys", tablefmt="fancy_grid"))
+        self.save_report()
+
+    def save_report(self):
+        filename = f"SSL_Report_{datetime.now().strftime('%Y%m%d')}.json"
+        with open(filename, 'w') as f:
+            json.dump(self.results, f, indent=4, default=str)
+        print(f"\n{Fore.MAGENTA}[+] Security report saved to {filename}")
+
+if __name__ == "__main__":
+    sentry = CertSentryPro()
+    user_input = input("Enter domains separated by space: ").split()
+    sentry.audit(user_input)
